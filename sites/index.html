@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REDCORE SYSTEMS | RCS-01 Sentinel</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #171717 0%, #050505 45%, #000 100%);
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 0, 0, 0.18);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .logo span {
+      color: #ff1b1b;
+      text-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 14px;
+      color: #bdbdbd;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ff2a2a;
+      text-shadow: 0 0 8px red;
+    }
+
+    .access-btn {
+      padding: 11px 20px;
+      border: 1px solid #ff2525;
+      border-radius: 30px;
+      color: #fff;
+      background: rgba(255, 0, 0, 0.08);
+      transition: 0.3s;
+    }
+
+    .access-btn:hover {
+      background: #ff1b1b;
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+    }
+
+    .hero {
+      min-height: 100vh;
+      padding: 130px 8% 70px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(255, 0, 0, 0.18);
+      filter: blur(120px);
+      right: -120px;
+      top: 160px;
+      z-index: -1;
+    }
+
+    .status {
+      color: #ff3333;
+      font-size: 14px;
+      letter-spacing: 3px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.95;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 span {
+      color: #ff2020;
+      text-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+    }
+
+    .hero p {
+      max-width: 620px;
+      color: #c7c7c7;
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 34px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 26px;
+      border-radius: 6px;
+      font-weight: 700;
+      border: 1px solid #ff2929;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #ff1f1f;
+      color: white;
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 28px rgba(255, 0, 0, 0.8);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 0, 0, 0.16);
+      transform: translateY(-4px);
+    }
+
+    .robot-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .robot-ring {
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      position: absolute;
+      border: 1px solid rgba(255, 0, 0, 0.25);
+      box-shadow: inset 0 0 35px rgba(255, 0, 0, 0.18), 0 0 35px rgba(255, 0, 0, 0.15);
+      animation: rotateRing 14s linear infinite;
+    }
+
+    .robot-ring::before,
+    .robot-ring::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #ff1f1f;
+      border-radius: 50%;
+      box-shadow: 0 0 20px red;
+    }
+
+    .robot-ring::before {
+      top: 40px;
+      left: 65px;
+    }
+
+    .robot-ring::after {
+      bottom: 45px;
+      right: 70px;
+    }
+
+    .robot-img {
+      width: min(430px, 90vw);
+      max-height: 520px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 28px rgba(255, 0, 0, 0.7));
+      animation: floatRobot 4s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes floatRobot {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(1.5deg); }
+    }
+
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    section {
+      padding: 90px 8%;
+    }
+
+    .section-title {
+      font-size: 38px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .section-title span {
+      color: #ff2525;
+    }
+
+    .section-text {
+      max-width: 850px;
+      color: #c7c7c7;
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    .cards {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      padding: 28px;
+      min-height: 190px;
+      border: 1px solid rgba(255, 0, 0, 0.2);
+      background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,0,0,0.05));
+      border-radius: 18px;
+      transition: 0.35s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: #ff2a2a;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.22);
+    }
+
+    .card h3 {
+      color: #fff;
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .card p {
+      color: #bfbfbf;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+      max-width: 900px;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.25);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .spec-item strong {
+      color: #ff3030;
+    }
+
+    .logs {
+      background: linear-gradient(180deg, rgba(255,0,0,0.05), rgba(0,0,0,0));
+    }
+
+    .terminal {
+      margin-top: 35px;
+      max-width: 900px;
+      padding: 28px;
+      background: #070707;
+      border: 1px solid rgba(255, 0, 0, 0.35);
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.12);
+      font-family: Consolas, monospace;
+      color: #ff4d4d;
+      line-height: 1.9;
+    }
+
+    footer {
+      padding: 45px 8%;
+      border-top: 1px solid rgba(255, 0, 0, 0.22);
+      background: #030303;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    footer h3 {
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      color: #999;
+      line-height: 1.6;
+      max-width: 540px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: #bbb;
+    }
+
+    .footer-links a:hover {
+      color: #ff2525;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 950px) {
+      header {
+        padding: 18px 5%;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 120px;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .robot-ring {
+        width: 310px;
+        height: 310px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .specs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 44px;
+      }
+
+      section {
+        padding: 70px 6%;
+      }
+    }
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-text h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.about-text span {
+  color: red;
+}
+
+.about-text p {
+  color: #ccc;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.about-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: 1px solid red;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.about-btn:hover {
+  background: red;
+  box-shadow: 0 0 15px red;
+}
+
+.about-video {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.about-video video {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,0,0,0.4);
+  box-shadow: 0 0 30px rgba(255,0,0,0.4);
+}
+.specs-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  align-items: center; 
+}
+
+.specs-image {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 300px; 
+}
+.specs-image img {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(255,0,0,0.4);
+}
+#specs {
+  display: flex;
+  align-items: center;
+}
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">REDCORE <span>SYSTEMS</span></a>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#features">Technology</a>
+      <a href="#specs">Specs</a>
+      <a href="#logs">Logs</a>
+      <a href="#contact" class="access-btn">Request Access</a>
+    </nav>
+  </header>
+
+  <main class="hero" id="home">
+    <div class="hero-content">
+      <p class="status">System Status: Online</p>
+      <h1>RCS-01 <span>Sentinel</span></h1>
+      <p>
+        A futuristic autonomous security unit designed for surveillance, threat detection,
+        and high-risk environment control. Powered by the Red Core AI system.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#about" class="btn btn-primary">View Details</a>
+        <a href="#logs" class="btn btn-secondary">Enter System</a>
+      </div>
+    </div>
+
+    <div class="robot-area">
+      <div class="robot-ring"></div>
+      <img src="images/robot.png" alt="RCS-01 Sentinel Robot" class="robot-img" />
+    </div>
+  </main>
+
+<section id="about">
+  <div class="about-container">
+
+    <div class="about-text">
+      <h2>ABOUT <span>RCS-01</span></h2>
+
+      <p>
+        The RCS-01 Sentinel is the main experimental unit of REDCORE SYSTEMS.
+        It was created as a digital concept of a next-generation robotic guard,
+        combining artificial intelligence, autonomous movement, and advanced visual scanning.
+      </p>
+
+      <p>
+        The purpose of this website is to present the robot through a dark futuristic interface,
+        inspired by sci-fi technology and game-like environments.
+      </p>
+
+      <a href="#specs" class="about-btn">View Full Specifications →</a>
+    </div>
+
+    <div class="about-video">
+      <video autoplay muted loop>
+        <source src="video/videoplayback.mp4" type="video/mp4">
+      </video>
+    </div>
+
+  </div>
+</section>
+
+  <section id="features" class="reveal">
+    <h2 class="section-title">Core <span>Technology</span></h2>
+    <p class="section-text">
+      REDCORE SYSTEMS focuses on AI-driven security, fast reaction, and intelligent observation.
+      The Sentinel is designed to detect unusual activity, scan its surroundings, and respond before danger develops.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Red Core Vision</h3>
+        <p>Central optical sensor with red scanning light for movement and target detection.</p>
+      </div>
+
+      <div class="card">
+        <h3>AI Tracking</h3>
+        <p>Behavior analysis system that observes movement patterns and possible threats.</p>
+      </div>
+
+      <div class="card">
+        <h3>Autonomous Patrol</h3>
+        <p>Independent movement logic for restricted areas, labs, and simulation zones.</p>
+      </div>
+
+      <div class="card">
+        <h3>Rapid Response</h3>
+        <p>Fast reaction protocol designed to warn, block, or neutralize suspicious activity.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="specs" class="reveal">
+    <h2 class="section-title">Technical <span>Specifications</span></h2>
+
+    <div class="specs-grid">
+      <div class="spec-item"><strong>Model</strong><span>RCS-01 Sentinel</span></div>
+      <div class="spec-item"><strong>Brand</strong><span>REDCORE SYSTEMS</span></div>
+      <div class="spec-item"><strong>AI Version</strong><span>REDCORE v3.7</span></div>
+      <div class="spec-item"><strong>Vision</strong><span>Red Core Optical Sensor</span></div>
+      <div class="spec-item"><strong>Mode</strong><span>Autonomous Patrol</span></div>
+      <div class="spec-item"><strong>Response Time</strong><span>0.2 seconds</span></div>
+      <div class="spec-item"><strong>Power</strong><span>Hybrid Energy Cell</span></div>
+      <div class="spec-item"><strong>Status</strong><span>Active / Monitoring</span></div>
+    </div>
+        <div class="specs-image">
+      <img src="images/robot drawings.png" alt="Technical Specs">
+    </div>
+  </section>
+
+  <section id="logs" class="logs reveal">
+    <h2 class="section-title">System <span>Logs</span></h2>
+    <p class="section-text">
+      The archive section gives the website a mysterious sci-fi atmosphere. These logs make the robot feel like a real experimental system.
+    </p>
+
+    <div class="terminal">
+      <p>&gt; REDCORE SYSTEM BOOTING...</p>
+      <p>&gt; RCS-01 SENTINEL: ONLINE</p>
+      <p>&gt; OPTICAL SENSOR: ACTIVE</p>
+      <p>&gt; PATROL PROTOCOL: ENABLED</p>
+      <p>&gt; WARNING: Unauthorized interaction may trigger defensive response.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div>
+      <h3>REDCORE SYSTEMS © 2042</h3>
+      <p>
+        Autonomous Intelligence Division. Surveillance. Analysis. Control.
+        All units operate under controlled protocol conditions.
+      </p>
+    </div>
+
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Security Notice</a>
+      <a href="#">System Status</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const revealElements = document.querySelectorAll('.reveal');
+
+    function revealOnScroll() {
+      for (let i = 0; i < revealElements.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = revealElements[i].getBoundingClientRect().top;
+        const revealPoint = 120;
+
+        if (elementTop < windowHeight - revealPoint) {
+          revealElements[i].classList.add('active');
+        }
+      }
+    }
+
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+  </script>
+  <script>
+  const video = document.querySelector("video");
+
+  video.addEventListener("loadedmetadata", () => {
+    video.currentTime = 5; 
+  });
+
+  video.addEventListener("timeupdate", () => {
+    if (video.currentTime > 10) {
+      video.currentTime = 5; 
+    }
+  });
+</script>
+</body>
+</html>
